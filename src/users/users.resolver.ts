@@ -1,4 +1,6 @@
+import { UseGuards } from "@nestjs/common";
 import { Resolver, Query, Args, Mutation } from "@nestjs/graphql";
+import { AuthenGuard } from "src/framework/guard/auth.guard";
 import { GetUserArgs } from "./dtos/args/get-user.args";
 import { GetUsersArgs } from "./dtos/args/get-users.args";
 import { CreateUserInputType } from "./dtos/input/create-user.input";
@@ -25,6 +27,7 @@ export class UsersResolver {
     }
 
     @Mutation(() => User)
+    @UseGuards(AuthenGuard('createUserData'))
     createUser(@Args('createUserData') createUserData: CreateUserInputType): User {
         return this.usersService.createUser(createUserData)
     }

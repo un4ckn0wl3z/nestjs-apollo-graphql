@@ -1,0 +1,11 @@
+openapi: 3.0.0
+paths: {}
+info:
+  title: user-graphql
+  description: "[CQRS] Command"
+  version: "1.0"
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas: {}
