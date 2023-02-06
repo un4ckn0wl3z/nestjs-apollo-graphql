@@ -12,7 +12,6 @@ import { CustomLoggerService } from './framework/logger/logger.service';
 export const GLOBAL_OS_NAME = os.hostname();
 export let GLOBAL_LOGGER_INSTANCE: CustomLoggerService;
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = app.get<CustomLoggerService>(CustomLoggerService);
@@ -23,7 +22,6 @@ async function bootstrap() {
       return new MissingOrIncorrectParameterException()
     },
   }))
-
   const configService = app.get<ConfigService>(ConfigService);
   const config = new DocumentBuilder()
   .setTitle(configService.get<string>('app.name'))

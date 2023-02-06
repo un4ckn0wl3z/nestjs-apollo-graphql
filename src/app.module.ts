@@ -13,6 +13,12 @@ import { UtilService } from './framework/util/util.service';
 import { CustomLoggerService } from './framework/logger/logger.service';
 import { RequestHelperService } from './framework/helper/request.service';
 import { UpdateResponseService } from './framework/helper/update-response.service';
+import { CustomSummaryLoggerService } from './framework/logger/summary-logger.service';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggerInterceptor } from './framework/interceptor/logger.interceptor';
+import { makeCounterProvider, PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { HttpExceptionFilter } from './framework/filter/http-exception.filter';
+import { GraphQLError, GraphQLFormattedError } from 'graphql';
 
 
 const loggerTransport = [];
@@ -36,9 +42,26 @@ if(process.env.ZONE !== "prod") {
 @Global()
 @Module({
   imports: [
+    PrometheusModule.register({
+      path: '/metrics',
+      defaultMetrics: {
+        enabled: false,
+      },
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      formatError: (error: GraphQLError) => {
+        const graphQLFormattedError: GraphQLFormattedError = {
+          message: error.originalError.message,
+          extensions: {
+            status: error.extensions.exception['status'],
+            ...error.extensions.exception['response']
+          }
+        };
+        return graphQLFormattedError;
+      }
+
     }),
     UsersModule,
     ConfigModule.forRoot({
@@ -58,7 +81,21 @@ if(process.env.ZONE !== "prod") {
     }),
   ],
   controllers: [],
-  providers: [UtilService, CustomLoggerService, RequestHelperService, UpdateResponseService],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggerInterceptor
+    },
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter
+    },
+    makeCounterProvider({
+      name: "App_Stat",
+      help: "collection of the method, status, resultCode, commandName, containerId",
+      labelNames: ["method", "status", "resultCode", "commandName", "containerId"],
+    })
+    ,CustomSummaryLoggerService, UtilService, CustomLoggerService, RequestHelperService, UpdateResponseService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -66,5 +103,6 @@ export class AppModule implements NestModule {
       .apply(EntryPointMiddleware)
       .forRoutes('*');
   }
+
 
 }

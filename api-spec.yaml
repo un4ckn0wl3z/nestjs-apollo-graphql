@@ -1,5 +1,12 @@
 openapi: 3.0.0
-paths: {}
+paths:
+  /metrics:
+    get:
+      operationId: PrometheusController_index
+      parameters: []
+      responses:
+        "200":
+          description: ""
 info:
   title: user-graphql
   description: "[CQRS] Command"
