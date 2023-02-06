@@ -1,5 +1,12 @@
 openapi: 3.0.0
 paths:
+  /:
+    get:
+      operationId: AppController_healthCheck
+      parameters: []
+      responses:
+        "200":
+          description: ""
   /metrics:
     get:
       operationId: PrometheusController_index
@@ -9,7 +16,7 @@ paths:
           description: ""
 info:
   title: user-graphql
-  description: "[CQRS] Command"
+  description: GraphQL prototype Command
   version: "1.0"
   contact: {}
 tags: []

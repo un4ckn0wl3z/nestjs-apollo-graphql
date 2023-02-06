@@ -21,6 +21,7 @@ import { HttpExceptionFilter } from './framework/filter/http-exception.filter';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import { CustomAxiosService } from './framework/util/custom-axios.service';
 import { HttpModule } from '@nestjs/axios';
+import { AppController } from './app.controller';
 
 
 const loggerTransport = [];
@@ -86,7 +87,7 @@ if(process.env.ZONE !== "prod") {
       }),
     }),
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [
     {
       provide: APP_INTERCEPTOR,
