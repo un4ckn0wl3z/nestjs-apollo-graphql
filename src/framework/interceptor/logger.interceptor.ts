@@ -39,8 +39,7 @@ export class LoggerInterceptor implements NestInterceptor {
                 this.summaryLoggerService.update('processTime', `${Date.now() - this.requestHelperService.getNow()}ms`)
                 this.summaryLoggerService.flush()
                 if(!_.isNil(this.loggerService.getLogDto().command) && this.loggerService.getLogDto().command !== '#############'){
-                    this.counter.labels(this.loggerService.getLogDto().httpMethod,
-                    this.loggerService.getLogDto().responseHttpStatus,
+                    this.counter.labels(
                     this.loggerService.getLogDto().transactionResult,
                     this.loggerService.getLogDto().command,
                     this.loggerService.getLogDto().instance).inc()

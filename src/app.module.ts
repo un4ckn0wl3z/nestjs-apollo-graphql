@@ -92,8 +92,8 @@ if(process.env.ZONE !== "prod") {
     },
     makeCounterProvider({
       name: "App_Stat",
-      help: "collection of the method, status, resultCode, commandName, containerId",
-      labelNames: ["method", "status", "resultCode", "commandName", "containerId"],
+      help: "collection of the resultCode, commandName, containerId",
+      labelNames: ["resultCode", "commandName", "containerId"],
     })
     ,CustomSummaryLoggerService, UtilService, CustomLoggerService, RequestHelperService, UpdateResponseService],
 })

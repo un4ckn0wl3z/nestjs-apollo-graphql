@@ -45,7 +45,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
                     status = 400
                 }
                 else{
-                    
+
                     resultCode = exception.getResponse()['resultCode']
                     developerMessage = exception.getResponse()['developerMessage']
                     status = exception.getStatus()
@@ -74,11 +74,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
             this.summaryLoggerService.update('processTime', `${Date.now() - this.requestHelperService.getNow()}ms`)
             this.summaryLoggerService.flushError(systemErrorStack)
             if(!_.isNil(this.loggerService.getLogDto().command) && this.loggerService.getLogDto().command !== '#############'){
-                this.counter.labels(this.loggerService.getLogDto().httpMethod,
-                this.loggerService.getLogDto().responseHttpStatus,
-                this.loggerService.getLogDto().transactionResult,
-                this.loggerService.getLogDto().command,
-                this.loggerService.getLogDto().instance).inc()
+                    this.counter.labels(
+                    this.loggerService.getLogDto().transactionResult,
+                    this.loggerService.getLogDto().command,
+                    this.loggerService.getLogDto().instance).inc()
             }
 
             return exception;
