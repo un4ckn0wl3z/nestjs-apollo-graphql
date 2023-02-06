@@ -1,7 +1,7 @@
 app:
   port: 3000
   name: 'user-graphql'
-  description: '[CQRS] Command'
+  description: 'GraphQL prototype Command'
   version: '1.0'
   document-path: '/api-doc'
 
@@ -15,15 +15,7 @@ nanoid:
 api-services:
   photos:
     list-photo:
-      url: https://self-signed.badssl.com/
+      url: https://jsonplaceholder.typicode.com/photos/1
       method: "GET"
       timeout: 5000
-      reject-unauthorized: false
 
-kafka:
-  client:
-    client-id: 'user-query'
-    brokers:
-      - '134.209.108.174:9092'
-  consumer:
-    group-id: 'user-query-consumer'

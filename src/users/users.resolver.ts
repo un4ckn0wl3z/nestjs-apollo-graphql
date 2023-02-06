@@ -1,6 +1,7 @@
 import { UseGuards } from "@nestjs/common";
 import { Resolver, Query, Args, Mutation } from "@nestjs/graphql";
 import { AuthenGuard } from "src/framework/guard/auth.guard";
+import { CustomLoggerService } from "src/framework/logger/logger.service";
 import { GetUserArgs } from "./dtos/args/get-user.args";
 import { GetUsersArgs } from "./dtos/args/get-users.args";
 import { CreateUserInputType } from "./dtos/input/create-user.input";
@@ -12,9 +13,11 @@ import { UsersService } from "./users.service";
 @Resolver(() => User)
 export class UsersResolver {
 
-    constructor(private readonly usersService: UsersService){
+    constructor(
+        private readonly usersService: UsersService,
+        private readonly logger: CustomLoggerService,
 
-    }
+        ){}
 
     @Query(() => User, {name: 'user', nullable: true})
      getUser(@Args() getUserArgs: GetUserArgs): User {
@@ -29,6 +32,7 @@ export class UsersResolver {
     @Mutation(() => User)
     @UseGuards(AuthenGuard('createUserData'))
     createUser(@Args('createUserData') createUserData: CreateUserInputType): User {
+        this.logger.info('createUser entered', {data: createUserData})
         return this.usersService.createUser(createUserData)
     }
 

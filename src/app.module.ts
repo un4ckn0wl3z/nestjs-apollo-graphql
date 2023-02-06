@@ -20,6 +20,7 @@ import { makeCounterProvider, PrometheusModule } from '@willsoto/nestjs-promethe
 import { HttpExceptionFilter } from './framework/filter/http-exception.filter';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import { CustomAxiosService } from './framework/util/custom-axios.service';
+import { HttpModule } from '@nestjs/axios';
 
 
 const loggerTransport = [];
@@ -43,6 +44,7 @@ if(process.env.ZONE !== "prod") {
 @Global()
 @Module({
   imports: [
+    HttpModule.register({}),
     PrometheusModule.register({
       path: '/metrics',
       defaultMetrics: {
