@@ -99,6 +99,9 @@ if(process.env.ZONE !== "prod") {
       labelNames: ["resultCode", "commandName", "containerId"],
     })
     ,CustomSummaryLoggerService, UtilService, CustomLoggerService, RequestHelperService, UpdateResponseService],
+    exports: [CustomLoggerService, RequestHelperService, UtilService, UpdateResponseService]
+
+
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
