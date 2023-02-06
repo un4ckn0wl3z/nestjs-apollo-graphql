@@ -19,6 +19,7 @@ import { LoggerInterceptor } from './framework/interceptor/logger.interceptor';
 import { makeCounterProvider, PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { HttpExceptionFilter } from './framework/filter/http-exception.filter';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
+import { CustomAxiosService } from './framework/util/custom-axios.service';
 
 
 const loggerTransport = [];
@@ -98,8 +99,8 @@ if(process.env.ZONE !== "prod") {
       help: "collection of the resultCode, commandName, containerId",
       labelNames: ["resultCode", "commandName", "containerId"],
     })
-    ,CustomSummaryLoggerService, UtilService, CustomLoggerService, RequestHelperService, UpdateResponseService],
-    exports: [CustomLoggerService, RequestHelperService, UtilService, UpdateResponseService]
+    ,CustomAxiosService,CustomSummaryLoggerService, UtilService, CustomLoggerService, RequestHelperService, UpdateResponseService],
+    exports: [CustomAxiosService, CustomLoggerService, RequestHelperService, UtilService, UpdateResponseService]
 
 
 })
