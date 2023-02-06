@@ -48,20 +48,23 @@ if(process.env.ZONE !== "prod") {
         enabled: false,
       },
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      formatError: (error: GraphQLError) => {
-        const graphQLFormattedError: GraphQLFormattedError = {
-          message: error.originalError.message,
-          extensions: {
-            status: error.extensions.exception['status'],
-            ...error.extensions.exception['response']
-          }
-        };
-        return graphQLFormattedError;
-      }
-
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+        formatError: (error: GraphQLError) => {
+          const graphQLFormattedError: GraphQLFormattedError = {
+            message: error.originalError.message,
+            extensions: {
+              appName: config.get<string>('app.name').toLocaleUpperCase(),
+              status: error.extensions.exception['status'],
+              ...error.extensions.exception['response']
+            }
+          };
+          return graphQLFormattedError;
+        }
+      }),
     }),
     UsersModule,
     ConfigModule.forRoot({

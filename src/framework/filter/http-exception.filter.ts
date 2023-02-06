@@ -56,11 +56,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
                 resultCode = "50005"
                 systemErrorStack = exception.stack
             }
-            
             const responseBody = {
+                appName: `${this.configService.get<string>('app.name').toUpperCase()}`,
                 status,
                 resultCode: resultCode,
-                developerMessage: `[${this.configService.get<string>('app.name').toUpperCase()}] - ${developerMessage}`
+                developerMessage: `${developerMessage}`
             }
             this.loggerService.info(`${this.configService.get<string>('app.name')} -> Client`, { /*headers: resposne.getHeaders() || {},*/ body: responseBody || {}} )
     
