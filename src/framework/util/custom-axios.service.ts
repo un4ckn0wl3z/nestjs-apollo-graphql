@@ -1,11 +1,10 @@
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
+import { InternalServerErrorException } from "@nestjs/common/exceptions";
 import { ConfigService } from "@nestjs/config";
 import { AxiosRequestConfig } from "axios";
 import { firstValueFrom } from "rxjs";
-
-import { CustomLoggerService } from "src/framework/logger/logger.service";
-import { InternalServerErrorException } from "../exception/application.exception";
+import { CustomLoggerService } from "../logger/logger.service";
 import { UtilService } from "./util.service";
 
 @Injectable()
@@ -26,16 +25,16 @@ export class CustomAxiosService {
             response = await firstValueFrom(this.httpService.request(aixosConfig))
             this.logger.info(`[HTTP Response Operation] ${cmd} -> ${this.configService.get<string>('app.name')}`, { headers: response.headers, body: response.data })
         } catch (error) {
-            this.handleNoneBusinessError(error, cmd)
+            this.handleNonBusinessError(error, cmd)
             response = error.response
-            this.logger.error(`[HTTP Response Operation] ${cmd} -> ${this.configService.get<string>('app.name')}`, 'Error Occurs!', response)
+            this.logger.error(`[HTTP Response Operation] ${cmd} -> ${this.configService.get<string>('app.name')}`, 'Error Occurs!', error)
         }
 
         return this.utilService.responseServiceApi(response)
     }
 
 
-    private handleNoneBusinessError(err: any, cmd: string) {
+    private handleNonBusinessError(err: any, cmd: string) {
         switch (err.code) {
             case "DEPTH_ZERO_SELF_SIGNED_CERT":
             case "CERT_HAS_EXPIRED":

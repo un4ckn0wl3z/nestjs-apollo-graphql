@@ -8,9 +8,7 @@ import { Counter } from "prom-client";
 import { InjectMetric } from "@willsoto/nestjs-prometheus";
 import * as _ from "lodash";
 import { UtilService } from '../util/util.service';
-import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
-
-
+import { GqlContextType } from '@nestjs/graphql';
 
 @Injectable()
 export class LoggerInterceptor implements NestInterceptor {

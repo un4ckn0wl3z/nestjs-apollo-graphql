@@ -23,12 +23,9 @@ import { CustomAxiosService } from './framework/util/custom-axios.service';
 import { HttpModule } from '@nestjs/axios';
 import { AppController } from './app.controller';
 
-
 const loggerTransport = [];
 loggerTransport.push(new winston.transports.Console())
-
 const logger = new Logger('AppModule')
-
 
 if(process.env.ZONE !== "prod") {
   logger.log(`None Production ENV Detected! Program will write log to file`)

@@ -7,12 +7,9 @@ import * as winstonDailyRotateFile from 'winston-daily-rotate-file';
 import { UtilService } from '../util/util.service';
 
 
-
 @Injectable()
 export class CustomSummaryLoggerService {
-
     private logger: LoggerService
-
     constructor(
         private readonly configService: ConfigService,
         private readonly utilService: UtilService

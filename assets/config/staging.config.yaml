@@ -18,4 +18,5 @@ api-services:
       url: https://jsonplaceholder.typicode.com/photos/1
       method: "GET"
       timeout: 5000
+      reject-unauthorized: false
 

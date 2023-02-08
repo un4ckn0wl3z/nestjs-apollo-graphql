@@ -10,8 +10,7 @@ import { DeleteUserInputType } from "./dtos/input/delete-user.input";
 @Injectable()
 export class UsersService {
     private users: User[] = [];
-
-
+    
     public createUser(createUserData: CreateUserInputType): User {
         const user : User = {
             userId: uuidv4(),
